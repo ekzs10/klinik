@@ -37,13 +37,16 @@ RUN composer install --no-interaction --no-scripts --no-autoloader
 COPY package.json package-lock.json ./
 
 # Install JS dependencies
-RUN npm install
+RUN npm install && chown -R www-data:www-data /var/www/node_modules
 
 # Copy application files
 COPY --chown=www-data:www-data . /var/www
 
 # Generate Composer autoloader
 RUN composer dump-autoload --no-scripts --optimize
+
+# Change ownership of all files to www-data
+RUN chown -R www-data:www-data /var/www
 
 USER www-data
 
