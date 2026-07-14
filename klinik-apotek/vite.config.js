@@ -12,8 +12,11 @@ export default defineConfig({
     ],
     server: {
         host: '0.0.0.0',
+        origin: 'http://localhost:8000',
         hmr: {
             host: 'localhost',
+            clientPort: 8000,
+            path: 'vite-ws',
         },
     },
 });
