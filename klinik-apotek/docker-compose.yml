@@ -47,6 +47,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: klinik-vite
+    user: root
     restart: unless-stopped
     working_dir: /var/www
     volumes:
