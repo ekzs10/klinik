@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -27,8 +27,23 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Set working directory
 WORKDIR /var/www
 
-# Copy existing application directory permissions
+# Copy composer files for caching
+COPY composer.json composer.lock ./
+
+# Install PHP dependencies
+RUN composer install --no-interaction --no-scripts --no-autoloader
+
+# Copy package files for caching
+COPY package.json package-lock.json ./
+
+# Install JS dependencies
+RUN npm install
+
+# Copy application files
 COPY --chown=www-data:www-data . /var/www
+
+# Generate Composer autoloader
+RUN composer dump-autoload --no-scripts --optimize
 
 USER www-data
 

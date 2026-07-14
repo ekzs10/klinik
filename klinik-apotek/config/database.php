@@ -61,7 +61,7 @@ return [
             'engine' => null,
             
             // --- BAGIAN INI YANG KITA UBAH ---
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
+            'options' => extension_loaded('pdo_mysql') && env('DB_SSL', false) ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => base_path('cacert.pem'),
             ]) : [],
             // ---------------------------------
