@@ -16,19 +16,23 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Seeding Owner Admin
-        User::factory()->create([
-            'name' => 'Owner Admin',
-            'email' => 'admin@delcom.org',
-            'password' => bcrypt('SDI@2027'),
-            'role' => 'owner',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@delcom.org'],
+            [
+                'name' => 'Owner Admin',
+                'password' => bcrypt('SDI@2027'),
+                'role' => 'owner',
+            ]
+        );
 
         // Seeding Cashier Staff
-        User::factory()->create([
-            'name' => 'Cashier Staff',
-            'email' => 'cashier@delcom.org',
-            'password' => bcrypt('SDI@2027'),
-            'role' => 'cashier',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'cashier@delcom.org'],
+            [
+                'name' => 'Cashier Staff',
+                'password' => bcrypt('SDI@2027'),
+                'role' => 'cashier',
+            ]
+        );
     }
 }
