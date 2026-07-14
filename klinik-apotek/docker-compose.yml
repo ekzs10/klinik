@@ -4,13 +4,14 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: klinik-app
+    user: root
     restart: unless-stopped
     working_dir: /var/www
     volumes:
       - .:/var/www
       - /var/www/vendor
     command: >
-      sh -c "until php -r '$$lines=explode(PHP_EOL, file_get_contents(\".env\")); $$e=[]; foreach($$lines as $$l){ $$p=explode(\"=\", $$l, 2); if(count($$p)===2) $$e[trim($$p[0])]=trim($$p[1]); } new PDO(\"mysql:host=\".$$e[\"DB_HOST\"].\";port=\".$$e[\"DB_PORT\"].\";dbname=\".$$e[\"DB_DATABASE\"], $$e[\"DB_USERNAME\"], $$e[\"DB_PASSWORD\"]);' >/dev/null 2>&1; do echo 'Waiting for database...'; sleep 2; done && php artisan migrate --force && php artisan db:seed --force && php-fpm"
+      sh -c "until php -r '$$lines=explode(PHP_EOL, file_get_contents(\".env\")); $$e=[]; foreach($$lines as $$l){ $$p=explode(\"=\", $$l, 2); if(count($$p)===2) $$e[trim($$p[0])]=trim($$p[1]); } new PDO(\"mysql:host=\".$$e[\"DB_HOST\"].\";port=\".$$e[\"DB_PORT\"].\";dbname=\".$$e[\"DB_DATABASE\"], $$e[\"DB_USERNAME\"], $$e[\"DB_PASSWORD\"]);' >/dev/null 2>&1; do echo 'Waiting for database...'; sleep 2; done && chown -R www-data:www-data storage bootstrap/cache && chmod -R 775 storage bootstrap/cache && php artisan migrate --force && php artisan db:seed --force && php-fpm"
     networks:
       - klinik-network
 
