@@ -42,6 +42,9 @@ RUN npm install && chown -R www-data:www-data /var/www/node_modules
 # Copy application files
 COPY --chown=www-data:www-data . /var/www
 
+# Build React Vite assets for production
+RUN npm run build
+
 # Generate Composer autoloader
 RUN composer dump-autoload --no-scripts --optimize
 
